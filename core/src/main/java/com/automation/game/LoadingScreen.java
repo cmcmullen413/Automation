@@ -2,6 +2,7 @@ package com.automation.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -24,11 +25,16 @@ public class LoadingScreen implements Screen {
         // Instantiate a sprite batch
         spriteBatch = new SpriteBatch();
         // Load the background texture
-        background = new Texture(Gdx.files.internal("loading_screen.png"));
+        background = new Texture("loading_screen.png");
 
-        // TODO: Make this a more robust loader so loading a bunch of textures is easy
         // Queue the textures to be loaded
-        main.getManager().load("BlankTile.png", Texture.class);
+        //
+        // Get the directory handle for Tiles\
+        FileHandle dir = Gdx.files.internal("assets/tiles");
+        // Loop through each file and load it
+        for (FileHandle file : dir.list()) {
+            main.getManager().load(file.path(), Texture.class);
+        }
     }
 
     @Override

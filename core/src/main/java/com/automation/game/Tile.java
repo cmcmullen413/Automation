@@ -10,7 +10,7 @@ public abstract class Tile {
     public static final int TILE_SIZE = 25;
 
     // A reference to the asset manager to grab textures
-    private AssetManager manager;
+    private final AssetManager manager;
 
     private int tileX;
     private int tileY;
@@ -22,6 +22,6 @@ public abstract class Tile {
     }
 
     public void draw(SpriteBatch spriteBatch) {
-        spriteBatch.draw(manager.get(this.getClass().getSimpleName() + ".png", Texture.class), TILE_SIZE*tileX, TILE_SIZE*tileY, TILE_SIZE, TILE_SIZE);
+        spriteBatch.draw(manager.get("assets/tiles/" + this.getClass().getSimpleName() + ".png", Texture.class), TILE_SIZE*tileX, TILE_SIZE*tileY, TILE_SIZE, TILE_SIZE);
     }
 }
