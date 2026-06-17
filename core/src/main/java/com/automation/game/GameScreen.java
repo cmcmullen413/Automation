@@ -22,7 +22,7 @@ public class GameScreen implements Screen {
         // Instantiate the objects
         spriteBatch = new SpriteBatch();
         camera = new OrthographicCamera();
-        viewport = new ExtendViewport(16, 9, camera);
+        viewport = new ExtendViewport(800, 480, camera);
 
         gameState = new GameState();
     }
@@ -31,6 +31,10 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         // Update the game state
         gameState.update(delta);
+
+        // Apply the viewport and set the projection matrix from the camera
+        viewport.apply();
+        spriteBatch.setProjectionMatrix(camera.combined);
 
         // Begin the sprite batch and make draw calls
         spriteBatch.begin();
