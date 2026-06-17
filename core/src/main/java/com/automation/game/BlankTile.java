@@ -1,12 +1,10 @@
 package com.automation.game;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.assets.AssetManager;
 
 public class BlankTile extends Tile{
 
-    public BlankTile(int xPos, int yPos) {
-        // TODO: Make this use an asset manager to reduce duplicate textures
-        super(new Texture(Gdx.files.internal("blank_tile.png")), xPos, yPos);
+    public BlankTile(AssetManager manager, int xPos, int yPos) {
+        super(manager, xPos, yPos);
     }
 }

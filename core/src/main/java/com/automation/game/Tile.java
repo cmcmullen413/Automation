@@ -1,5 +1,7 @@
 package com.automation.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -7,18 +9,19 @@ public abstract class Tile {
     // The default size of a tile
     public static final int TILE_SIZE = 25;
 
-    private Texture texture;
+    // A reference to the asset manager to grab textures
+    private AssetManager manager;
 
     private int tileX;
     private int tileY;
 
-    public Tile(Texture texture, int xPos, int yPos) {
-        this.texture = texture;
+    public Tile(AssetManager manager, int xPos, int yPos) {
+        this.manager = manager;
         tileX = xPos;
         tileY = yPos;
     }
 
     public void draw(SpriteBatch spriteBatch) {
-        spriteBatch.draw(texture, TILE_SIZE*tileX, TILE_SIZE*tileY, TILE_SIZE, TILE_SIZE);
+        spriteBatch.draw(manager.get(this.getClass().getSimpleName() + ".png", Texture.class), TILE_SIZE*tileX, TILE_SIZE*tileY, TILE_SIZE, TILE_SIZE);
     }
 }

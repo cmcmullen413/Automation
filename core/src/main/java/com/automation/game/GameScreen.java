@@ -2,12 +2,17 @@ package com.automation.game;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class GameScreen implements Screen {
+
+    // Reference to main for switching screens and using the asset manager
+    Main main;
 
     // Screen Objects
     SpriteBatch spriteBatch;
@@ -17,6 +22,10 @@ public class GameScreen implements Screen {
     // Game Objects
     GameState gameState;
 
+    public GameScreen(Main main) {
+        this.main = main;
+    }
+
     @Override
     public void show() {
         // Instantiate the objects
@@ -24,7 +33,8 @@ public class GameScreen implements Screen {
         camera = new OrthographicCamera();
         viewport = new ExtendViewport(800, 480, camera);
 
-        gameState = new GameState();
+        // Initialize the game state
+        gameState = new GameState(main.getManager());
     }
 
     @Override
@@ -32,11 +42,14 @@ public class GameScreen implements Screen {
         // Update the game state
         gameState.update(delta);
 
+        // Clear the screen
+        ScreenUtils.clear(Color.BLACK);
+
         // Apply the viewport and set the projection matrix from the camera
         viewport.apply();
         spriteBatch.setProjectionMatrix(camera.combined);
 
-        // Begin the sprite batch and make draw calls
+        // Begin the sprite batch and make the game draw call
         spriteBatch.begin();
         gameState.drawWorld(spriteBatch);
         spriteBatch.end();
