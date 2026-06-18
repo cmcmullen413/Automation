@@ -15,22 +15,40 @@ public class GameState {
     // List of all the tiles in the world
     List<Tile> tiles;
 
+    // The camera controlled by the player
+    GameCamera camera;
+
     public GameState(AssetManager manager) {
         this.manager = manager;
+        camera = new GameCamera();
         initialize();
     }
 
-    public void update(float deltaTime) {
-
+    /**
+     * Updates the game state. Should be called once a frame
+     * @param delta
+     */
+    public void update(float delta) {
+        // Update input
+        InputHandler.update();
+        // Update camera
+        camera.update(delta);
     }
 
+    /**
+     * Draws the world onto the passed in sprite batch
+     * @param spriteBatch
+     */
     public void drawWorld(SpriteBatch spriteBatch) {
         // Draw each tile
         for (Tile tile : tiles) {
-            tile.draw(spriteBatch);
+            tile.draw(spriteBatch, camera.getX(), camera.getY());
         }
     }
 
+    /**
+     * Initializes the game state upon loading the game
+     */
     private void initialize() {
         // Fill the tiles array with the starting world tiles
         tiles = new ArrayList<>(WORLD_X*WORLD_Y);

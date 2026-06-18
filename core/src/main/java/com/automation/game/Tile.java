@@ -21,7 +21,8 @@ public abstract class Tile {
         tileY = yPos;
     }
 
-    public void draw(SpriteBatch spriteBatch) {
-        spriteBatch.draw(manager.get("assets/tiles/" + this.getClass().getSimpleName() + ".png", Texture.class), TILE_SIZE*tileX, TILE_SIZE*tileY, TILE_SIZE, TILE_SIZE);
+    public void draw(SpriteBatch spriteBatch, float camX, float camY) {
+        spriteBatch.draw(manager.get("assets/tiles/" + this.getClass().getSimpleName() + ".png", Texture.class),
+            TILE_SIZE*tileX-camX, TILE_SIZE*tileY-camY, TILE_SIZE, TILE_SIZE);
     }
 }
