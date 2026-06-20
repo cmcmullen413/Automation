@@ -35,7 +35,6 @@ public class GameScreen implements Screen {
 
         // Initialize the game state
         gameState = new GameState(main.getManager());
-
     }
 
     @Override

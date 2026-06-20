@@ -15,6 +15,8 @@ public class GameState {
 
     // List of all the tiles in the world
     List<Tile> tiles;
+    // List of all the buildings in the world
+    List<Building> buildings;
 
     // The camera controlled by the player
     GameCamera camera;
@@ -63,6 +65,10 @@ public class GameState {
         for (Tile tile : tiles) {
             tile.draw(spriteBatch, camera.getX(), camera.getY(), camera.getZoom());
         }
+        // Draw each building
+        for (Building building : buildings) {
+            building.draw(spriteBatch, camera.getX(), camera.getY(), camera.getZoom());
+        }
     }
 
     /**
@@ -71,9 +77,15 @@ public class GameState {
     private void initialize() {
         // Fill the tiles array with the starting world tiles
         tiles = new ArrayList<>(WORLD_X*WORLD_Y);
+        buildings = new ArrayList<>();
         for (int y = 0; y < WORLD_Y; y++) {
             for (int x = 0; x < WORLD_X; x++) {
+                // Fill the world with stone
                 tiles.add(new StoneTile(manager, x, y));
+                // Place belts along the diagonal
+                if (x == y) {
+                    buildings.add(new Belt(manager, x, y));
+                }
             }
         }
     }
