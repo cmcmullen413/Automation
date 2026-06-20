@@ -7,22 +7,20 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public abstract class Tile {
     // The default size of a tile
-    public static final int TILE_SIZE = 25;
+    protected static final int TILE_WIDTH = 50;
+    protected static final int TILE_HEIGHT = TILE_WIDTH/2;
 
     // A reference to the asset manager to grab textures
-    private final AssetManager manager;
+    protected final Texture texture;
 
-    private int tileX;
-    private int tileY;
+    protected final int x;
+    protected final int y;
 
     public Tile(AssetManager manager, int xPos, int yPos) {
-        this.manager = manager;
-        tileX = xPos;
-        tileY = yPos;
+        texture = manager.get("assets/tiles/" + this.getClass().getSimpleName() + ".png");
+        x = xPos;
+        y = yPos;
     }
 
-    public void draw(SpriteBatch spriteBatch, float camX, float camY) {
-        spriteBatch.draw(manager.get("assets/tiles/" + this.getClass().getSimpleName() + ".png", Texture.class),
-            TILE_SIZE*tileX-camX, TILE_SIZE*tileY-camY, TILE_SIZE, TILE_SIZE);
-    }
+    public abstract void draw(SpriteBatch spriteBatch, float camX, float camY);
 }

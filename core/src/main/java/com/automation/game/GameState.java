@@ -18,9 +18,13 @@ public class GameState {
     // The camera controlled by the player
     GameCamera camera;
 
+    // Timer to keep track of when a game tick should happen
+    float tickTimer;
+
     public GameState(AssetManager manager) {
         this.manager = manager;
         camera = new GameCamera();
+        tickTimer = 0f;
         initialize();
     }
 
@@ -33,6 +37,13 @@ public class GameState {
         InputHandler.update();
         // Update camera
         camera.update(delta);
+
+        // Update core game mechanics on a fixed time step ( 60/sec)
+        tickTimer += delta;
+        if (tickTimer >= 1/60f) {
+            gameTick();
+            tickTimer -= 1/60f;
+        }
     }
 
     /**
@@ -40,6 +51,8 @@ public class GameState {
      * @param spriteBatch
      */
     public void drawWorld(SpriteBatch spriteBatch) {
+        // TODO: Improve rendering to only draw tiles that will be on screen
+
         // Draw each tile
         for (Tile tile : tiles) {
             tile.draw(spriteBatch, camera.getX(), camera.getY());
@@ -54,8 +67,16 @@ public class GameState {
         tiles = new ArrayList<>(WORLD_X*WORLD_Y);
         for (int y = 0; y < WORLD_Y; y++) {
             for (int x = 0; x < WORLD_X; x++) {
-                tiles.add(new BlankTile(manager, x, y));
+                tiles.add(new StoneTile(manager, x, y));
             }
         }
+    }
+
+    /**
+     * Runs a game tick update.
+     * Should be called 60 times per second
+     */
+    private void gameTick() {
+
     }
 }

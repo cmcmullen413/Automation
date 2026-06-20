@@ -3,7 +3,7 @@ package com.automation.game;
 import com.badlogic.gdx.Input;
 
 public class GameCamera {
-    private static final float CAM_SPEED = 100f;
+    private static final float CAM_SPEED = 250f;
     private static final float ZOOM_SPEED = 1f;
 
     private float x,y;
