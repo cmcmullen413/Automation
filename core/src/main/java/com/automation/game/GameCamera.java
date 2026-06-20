@@ -4,7 +4,9 @@ import com.badlogic.gdx.Input;
 
 public class GameCamera {
     private static final float CAM_SPEED = 250f;
-    private static final float ZOOM_SPEED = 1f;
+    private static final float ZOOM_SPEED = 0.1f;
+    private static final float ZOOM_MIN = 0.25f;
+    private static final float ZOOM_MAX = 2f;
 
     private float x,y;
     private float zoom;
@@ -26,15 +28,10 @@ public class GameCamera {
             - (InputHandler.keyStates.get(Input.Keys.A) || InputHandler.keyStates.get(Input.Keys.LEFT) ? CAM_SPEED : 0));
         y += delta * ((InputHandler.keyStates.get(Input.Keys.W) || InputHandler.keyStates.get(Input.Keys.UP) ? CAM_SPEED : 0)
             - (InputHandler.keyStates.get(Input.Keys.S) || InputHandler.keyStates.get(Input.Keys.DOWN) ? CAM_SPEED : 0));
-
-        // Zoom the camera with the scroll wheel
-        // TODO
     }
 
     public void zoom(float amount) {
-        // TODO: Change this to zoom slower (maybe scaling instead of adding or subtracting) and not be able to have zoom < 0
-
         zoom += amount*ZOOM_SPEED;
-        System.out.println(amount);
+        zoom = Math.clamp(zoom, ZOOM_MIN, ZOOM_MAX);
     }
 }

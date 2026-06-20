@@ -7,8 +7,8 @@ import com.badlogic.gdx.InputAdapter;
 import java.util.HashMap;
 
 public class InputHandler extends InputAdapter {
-    // TODO: Look into making all of this event driven
 
+    // The keys that are tracked
     private static final int[] keys = {
         // Camera movement
         Input.Keys.W, Input.Keys.A, Input.Keys.S, Input.Keys.D,
@@ -50,9 +50,9 @@ public class InputHandler extends InputAdapter {
         }
     }
 
-    // Non static part of the input handler
+    // Non-static part of the input handler
     // Currently just used for camera scrolling
-    // TODO: Fix this to make not jank
+    // This is because it can only be done with events
 
     private GameCamera camera;
 
@@ -65,4 +65,6 @@ public class InputHandler extends InputAdapter {
         camera.zoom(amountY);
         return true;
     }
+
+
 }
