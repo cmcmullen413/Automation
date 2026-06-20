@@ -1,5 +1,6 @@
 package com.automation.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -25,6 +26,11 @@ public class GameState {
         this.manager = manager;
         camera = new GameCamera();
         tickTimer = 0f;
+
+        // Active the input handler
+        InputHandler inputHandler = new InputHandler(camera);
+        Gdx.input.setInputProcessor(inputHandler);
+
         initialize();
     }
 
@@ -55,7 +61,7 @@ public class GameState {
 
         // Draw each tile
         for (Tile tile : tiles) {
-            tile.draw(spriteBatch, camera.getX(), camera.getY());
+            tile.draw(spriteBatch, camera.getX(), camera.getY(), camera.getZoom());
         }
     }
 

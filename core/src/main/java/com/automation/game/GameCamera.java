@@ -30,4 +30,11 @@ public class GameCamera {
         // Zoom the camera with the scroll wheel
         // TODO
     }
+
+    public void zoom(float amount) {
+        // TODO: Change this to zoom slower (maybe scaling instead of adding or subtracting) and not be able to have zoom < 0
+
+        zoom += amount*ZOOM_SPEED;
+        System.out.println(amount);
+    }
 }

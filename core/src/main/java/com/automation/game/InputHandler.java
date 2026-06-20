@@ -2,10 +2,13 @@ package com.automation.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
 
 import java.util.HashMap;
 
-public class InputHandler {
+public class InputHandler extends InputAdapter {
+    // TODO: Look into making all of this event driven
+
     private static final int[] keys = {
         // Camera movement
         Input.Keys.W, Input.Keys.A, Input.Keys.S, Input.Keys.D,
@@ -45,5 +48,21 @@ public class InputHandler {
             keyPresses.put(key, Gdx.input.isKeyJustPressed(key));
             keyStates.put(key, Gdx.input.isKeyPressed(key));
         }
+    }
+
+    // Non static part of the input handler
+    // Currently just used for camera scrolling
+    // TODO: Fix this to make not jank
+
+    private GameCamera camera;
+
+    public InputHandler(GameCamera camera) {
+        this.camera = camera;
+    }
+
+    @Override
+    public boolean scrolled(float amountX, float amountY) {
+        camera.zoom(amountY);
+        return true;
     }
 }
