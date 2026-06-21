@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public abstract class Tile {
     // The default size of a tile
-    public static final int TILE_WIDTH = 50;
+    public static final int TILE_WIDTH = 52;
     public static final int TILE_HEIGHT = TILE_WIDTH/2;
 
     // A reference to the asset manager to grab textures

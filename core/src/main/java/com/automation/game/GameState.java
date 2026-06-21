@@ -83,7 +83,7 @@ public class GameState {
                 // Fill the world with stone
                 tiles.add(new StoneTile(manager, x, y));
                 // Place belts along the diagonal
-                if (x == y) {
+                if (x == 1 && y == 1) {
                     buildings.add(new Belt(manager, x, y));
                 }
             }
@@ -95,6 +95,8 @@ public class GameState {
      * Should be called 60 times per second
      */
     private void gameTick() {
-
+        for (Building building : buildings) {
+            building.update();
+        }
     }
 }

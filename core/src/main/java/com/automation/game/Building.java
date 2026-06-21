@@ -11,12 +11,21 @@ public abstract class Building {
     protected final String spritePath;
 
     TextureRegion currentTexture;
+    int buildingSizeX;
+    int buildingSizeY;
+    int buildingOffsetX;
+    int buildingOffsetY;
 
     int x;
     int y;
 
-    public Building(int x, int y) {
+    public Building(int x, int y, int buildingSizeX, int buildingSizeY) {
         spritePath = "assets/buildings/" + this.getClass().getSimpleName() + "/";
+        this.buildingSizeX = buildingSizeX;
+        this.buildingSizeY = buildingSizeY;
+        buildingOffsetX = (Tile.TILE_WIDTH - buildingSizeX)/2;
+        buildingOffsetY = (Tile.TILE_HEIGHT - buildingSizeY)/2;
+
         this.x = x;
         this.y = y;
     }
@@ -28,8 +37,11 @@ public abstract class Building {
      * @param spriteBatch
      */
     public void draw(SpriteBatch spriteBatch, float camX, float camY, float camZoom) {
-        float screenX = (x - y) * (Tile.TILE_WIDTH/2) * camZoom - camX;
-        float screenY = (x + y) * (Tile.TILE_HEIGHT/2) * camZoom - camY;
-        spriteBatch.draw(currentTexture, screenX, screenY, Tile.TILE_WIDTH*camZoom, Tile.TILE_HEIGHT*camZoom);
+        float realX = x+ 1f*buildingOffsetX/Tile.TILE_WIDTH;
+        // TODO Figure out if centering on the y is actually needed because it doesn't seem like it
+        float realY = y;// + 1f*buildingOffsetY/Tile.TILE_HEIGHT;
+        float screenX = (realX - realY) * (Tile.TILE_WIDTH/2) * camZoom - camX;
+        float screenY = (realX + realY) * (Tile.TILE_HEIGHT/2) * camZoom - camY;
+        spriteBatch.draw(currentTexture, screenX, screenY, buildingSizeX*camZoom, buildingSizeY*camZoom);
     }
 }
