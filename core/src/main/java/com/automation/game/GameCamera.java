@@ -3,7 +3,7 @@ package com.automation.game;
 import com.badlogic.gdx.Input;
 
 public class GameCamera {
-    private static final float CAM_SPEED = 250f;
+    private static final float CAM_SPEED = 400f;
     private static final float ZOOM_SPEED = 0.1f;
     private static final float ZOOM_MIN = 0.25f;
     private static final float ZOOM_MAX = 2f;
@@ -31,7 +31,7 @@ public class GameCamera {
     }
 
     public void zoom(float amount) {
-        zoom += amount*ZOOM_SPEED;
+        zoom -= amount*ZOOM_SPEED;
         zoom = Math.clamp(zoom, ZOOM_MIN, ZOOM_MAX);
     }
 }
