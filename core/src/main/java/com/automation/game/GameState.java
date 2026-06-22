@@ -88,7 +88,7 @@ public class GameState {
      */
     private void initialize() {
         // Fill the tiles array with the starting world tiles
-        tiles = new HashSet<>(WORLD_X*WORLD_Y);
+        tiles = new TreeSet<>();
         buildings = new TreeSet<>();
         for (int y = -WORLD_Y; y < WORLD_Y; y++) {
             for (int x = -WORLD_X; x < WORLD_X; x++) {
