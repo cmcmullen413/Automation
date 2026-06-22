@@ -2,7 +2,6 @@ package com.automation.game;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Belt extends Building {
@@ -29,6 +28,8 @@ public class Belt extends Building {
     public Belt(AssetManager manager, int x, int y) {
         super(x, y, TEX_SIZE_X, TEX_SIZE_Y);
         facing = 0;
+
+        // TODO: Implement belts connecting together
 
         this.manager = manager;
         texture = manager.get(spritePath + DIRECTIONS[facing] + "/single.png");
