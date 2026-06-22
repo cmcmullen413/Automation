@@ -37,11 +37,22 @@ public abstract class WorldObject implements Comparable<WorldObject> {
      * @return
      */
     public int compareTo(WorldObject o) {
+        return this.compareTo(o.x, o.y);
+    }
+
+    /**
+     * Defines the natural ordering of WorldObjects. Objects are ordered from back to front in the world space
+     * so they display overlapped correctly when drawn.
+     * @param x the x position to compare to
+     * @param y the y position to compare to
+     * @return
+     */
+    public int compareTo(int x, int y) {
         // Sort by x first, then y
         // Higher x or y should be ordered lower so when a set of buildings is iterated through
         // They can be drawn from back right to front left to display them properly
-        if (this.x != o.x) { return this.x < o.x ? 1 : -1; }
-        if (this.y != o.y) { return this.y < o.y ? 1 : -1; }
+        if (this.x != x) { return this.x < x ? 1 : -1; }
+        if (this.y != y) { return this.y < y ? 1 : -1; }
         // If the x and y are the same they are in the same square
         return 0;
     }
