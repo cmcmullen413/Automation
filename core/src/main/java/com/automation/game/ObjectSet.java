@@ -27,7 +27,7 @@ public class ObjectSet<T extends WorldObject> extends TreeSet<T> {
         if (comparison == 0) { return first; }
         // Otherwise, recurse left or right depending on comparison
         if (comparison > 0) { return this.getHelper(this.headSet(first), first, x, y); }
-        return this.getHelper(this.tailSet(first), first, x, y);
+        return this.getHelper(this.tailSet(first, false), first, x, y);
     }
 
     /**
@@ -51,10 +51,14 @@ public class ObjectSet<T extends WorldObject> extends TreeSet<T> {
         // Recursive case
         // If first > x, recurse down the head side of the tree
         if (comparison > 0) {
+            // If the previous call was down the tail side, subSet needs to be called instead of headSet
+            if (previous.compareTo(first) < 0) { return getHelper(this.subSet(previous, false, first, false), first, x, y); }
             return getHelper(this.headSet(first), first, x, y);
         }
         // Otherwise recurse down the tail side
-        return getHelper(this.subSet(first, false, previous, false), first, x, y);
+        // If the previous call was down the head side, subSet needs to be called instead of tailSet
+        if (previous.compareTo(first) > 0) { return getHelper(this.subSet(first, false, previous, false), first, x, y); }
+        return getHelper(this.tailSet(first, false), first, x, y);
 
     }
 }
