@@ -20,9 +20,6 @@ public class GameState {
 
     // The camera controlled by the player
     GameCamera camera;
-    // Where in the game world the cursor points at
-    int pointX;
-    int pointY;
 
     // Timer to keep track of when a game tick should happen
     float tickTimer;
@@ -48,14 +45,27 @@ public class GameState {
         InputHandler.update();
         // Update camera
         camera.update(delta);
-        // Update where the player is pointing to
-        updatePlayerPointer(InputHandler.mouseX, InputHandler.mouseY, camera.getX(), camera.getY(), camera.getZoom());
 
-        // TODO: Finish
-        // If the player left clicks, place the currently selected building at the cursor location
-        // If the player right clicks, delete the building at the cursor location
-        if (InputHandler.leftClick) {
+        // If the player is left clicking, place the currently selected building at the cursor location
+        // If the player is right clicking, delete the building at the cursor location
+        if (InputHandler.leftHold) {
+            // TODO: Implement building selection
+            // Currently just places a belt
 
+            // Get the location where the pointer is
+            int[] pointer = getPlayerPointer();
+
+            // Attempt to add a new building
+            // If there is already one there, the set will not be able to add it
+            // If there is no building there, the set will add it
+            buildings.add(new Belt(manager, pointer[0], pointer[1]));
+        } else if (InputHandler.rightHold) {
+            // Get the location where the pointer is
+            int[] pointer = getPlayerPointer();
+
+            // Call buildings.remove with a DummyObject
+            // If there is no building at that space, nothing will happen
+            buildings.remove(new Building(pointer[0], pointer[1], 0, 0) {@Override public void update() {}});
         }
 
         // Update core game mechanics on a fixed time step ( 60/sec)
@@ -112,11 +122,13 @@ public class GameState {
         }
     }
 
-    private void updatePlayerPointer(float mouseX, float mouseY, float camX, float camY, float camZoom) {
-        pointX = 0;
-        pointY = 0;
+    /**
+     * Reverses the transforms done with displaying objects to give the world coordinates of where the player is pointing
+     * @return An int array of length 2 [x, y]
+     */
+    private int[] getPlayerPointer() {
+        return new int[] {0, 0};
         // TODO: Finish
         // Basically just reverses the same transforms done in the draw function for Tile
-        //pointX = (int) (InputHandler.mouseX + camera.getX()) / (camera.getZoom() * );
     }
 }
