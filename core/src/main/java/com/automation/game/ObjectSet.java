@@ -19,7 +19,15 @@ public class ObjectSet<T extends WorldObject> extends TreeSet<T> {
         // If the set is empty, return immediately
         if (this.isEmpty()) { return null; }
 
-        return getHelper(this, x, y);
+        // Set up for the first recursive call
+        // Get the first element
+        T first = this.getFirst();
+        int comparison = first.compareTo(x, y);
+        // If first is at the position or null, return it
+        if (comparison == 0) { return first; }
+        // Otherwise, recurse left or right depending on comparison
+        if (comparison > 0) { return this.getHelper(this.headSet(first), first, x, y); }
+        return this.getHelper(this.tailSet(first), first, x, y);
     }
 
     /**
@@ -29,11 +37,13 @@ public class ObjectSet<T extends WorldObject> extends TreeSet<T> {
      * @param y
      * @return
      */
-    private T getHelper(SortedSet<T> set, int x, int y) {
+    private T getHelper(SortedSet<T> set, T previous, int x, int y) {
+        // If the passed set is empty, return null
+        if (set.isEmpty()) { return null; }
         // Get the first of the set and compare it to the x and y
         T first = set.getFirst();
-        int comparison = first.compareTo(x, y);
 
+        int comparison = first.compareTo(x, y);
         // Base case
         // If first has matching x and y, return it
         if (comparison == 0) { return first; }
@@ -41,10 +51,10 @@ public class ObjectSet<T extends WorldObject> extends TreeSet<T> {
         // Recursive case
         // If first > x, recurse down the head side of the tree
         if (comparison > 0) {
-            return getHelper(this.headSet(first), x, y);
+            return getHelper(this.headSet(first), first, x, y);
         }
         // Otherwise recurse down the tail side
-        return getHelper(this.tailSet(first), x, y);
+        return getHelper(this.subSet(first, false, previous, false), first, x, y);
 
     }
 }
