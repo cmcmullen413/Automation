@@ -1,8 +1,8 @@
 package com.automation.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.*;
@@ -14,9 +14,9 @@ public class GameState {
     AssetManager manager;
 
     // List of all the tiles in the world
-    Set<Tile> tiles;
+    ObjectSet<Tile> tiles;
     // List of all the buildings in the world
-    Set<Building> buildings;
+    ObjectSet<Building> buildings;
 
     // The camera controlled by the player
     GameCamera camera;
@@ -67,6 +67,23 @@ public class GameState {
             // If there is no building at that space, nothing will happen
             buildings.remove(new Building(pointer[0], pointer[1], 0, 0) {@Override public void update() {}});
         }
+        // If the player pressed R, rotate the building at the position if there is one
+        else if (InputHandler.keyPresses.get(Input.Keys.R)) {
+            // Get the mouse position
+            int[] pointer = getPlayerPointer();
+
+            // Get the building at the position if there is one
+            Building building = buildings.get(pointer[0], pointer[1]);
+            // If there is no building at the position, do nothing
+            if (building != null) {
+                // If there is a building, attempt to rotate it
+                if (!building.rotate()) {
+                    // If the building could not be rotated, print a message out
+                    // TODO: Make this print to the screen in some way so the player can see
+                    System.out.println("Building cannot be rotated");
+                }
+            }
+        }
 
         // Update core game mechanics on a fixed time step ( 60/sec)
         tickTimer += delta;
@@ -98,8 +115,8 @@ public class GameState {
      */
     private void initialize() {
         // Fill the tiles array with the starting world tiles
-        tiles = new TreeSet<>();
-        buildings = new TreeSet<>();
+        tiles = new ObjectSet<>();
+        buildings = new ObjectSet<>();
         for (int y = -WORLD_Y; y < WORLD_Y; y++) {
             for (int x = -WORLD_X; x < WORLD_X; x++) {
                 // Fill the world with stone

@@ -25,7 +25,18 @@ public abstract class Building extends WorldObject {
         buildingOffsetY = (TILE_HEIGHT - buildingSizeY)/2;
     }
 
+    /**
+     * Updates the building's state. Should be called once a game tick
+     */
     public abstract void update();
+
+    /**
+     * Rotates the building if it can be
+     * @return Returns whether the building was rotated
+     */
+    public boolean rotate() {
+        return false;
+    }
 
     /**
      * Draws the building onto the provided sprite batch

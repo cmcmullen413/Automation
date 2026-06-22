@@ -39,6 +39,12 @@ public class Belt extends Building {
         currentTexture = new TextureRegion(texture, TEX_COORDS[animationStep][0], TEX_COORDS[animationStep][1], TEX_SIZE_X, TEX_SIZE_Y);
     }
 
+    @Override
+    public boolean rotate() {
+        // TODO
+        return false;
+    }
+
     /**
      * Called once a tick to update the global animation step for all belts
      */

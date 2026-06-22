@@ -14,7 +14,9 @@ public class InputHandler extends InputAdapter {
     private static final int[] keys = {
         // Camera movement
         Input.Keys.W, Input.Keys.A, Input.Keys.S, Input.Keys.D,
-        Input.Keys.UP, Input.Keys.LEFT, Input.Keys.DOWN, Input.Keys.RIGHT
+        Input.Keys.UP, Input.Keys.LEFT, Input.Keys.DOWN, Input.Keys.RIGHT,
+        // Rotate buildings
+        Input.Keys.R
     };
 
     // Position of the mouse
