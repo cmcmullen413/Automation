@@ -9,8 +9,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public abstract class WorldObject implements Comparable<WorldObject> {
 
     // The default size of a tile
-    protected static final int TILE_WIDTH = 52;
-    protected static final int TILE_HEIGHT = TILE_WIDTH/2;
+    public static final int TILE_WIDTH = 52;
+    public static final int TILE_HEIGHT = TILE_WIDTH/2;
 
     // The current texture used to display the object
     protected TextureRegion currentTexture;

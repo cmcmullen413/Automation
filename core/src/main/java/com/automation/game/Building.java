@@ -32,7 +32,7 @@ public abstract class Building extends WorldObject {
      * @param spriteBatch
      */
     public void draw(SpriteBatch spriteBatch, float camX, float camY, float camZoom) {
-        float realX = x+ 1f*buildingOffsetX/Tile.TILE_WIDTH;
+        float realX = x + 1f*buildingOffsetX/Tile.TILE_WIDTH;
         // TODO Figure out if centering on the y is actually needed because it doesn't seem like it
         float realY = y;// + 1f*buildingOffsetY/Tile.TILE_HEIGHT;
         float screenX = (realX - realY) * (TILE_WIDTH/2) * camZoom - camX;
