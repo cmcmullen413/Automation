@@ -30,15 +30,6 @@ public abstract class WorldObject implements Comparable<WorldObject> {
      */
     public abstract void draw(SpriteBatch spriteBatch, float camX, float camY, float camZoom);
 
-    @Override
-    public boolean equals(Object o) {
-        // If the passed object isn't a WorldObject, return false
-        if (!o.getClass().equals(this.getClass())) { return false; }
-        // Otherwise, return true iff the coordinates match up
-        WorldObject obj = (WorldObject) o;
-        return (this.x == obj.x) && (this.y == obj.y);
-    }
-
     /**
      * Defines the natural ordering of WorldObjects. Objects are ordered from back to front in the world space
      * so they display overlapped correctly when drawn.
