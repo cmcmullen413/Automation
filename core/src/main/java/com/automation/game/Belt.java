@@ -41,8 +41,9 @@ public class Belt extends Building {
 
     @Override
     public boolean rotate() {
-        // TODO
-        return false;
+        facing += 1;
+        if (facing >= 4) { facing = 0; }
+        return true;
     }
 
     /**
