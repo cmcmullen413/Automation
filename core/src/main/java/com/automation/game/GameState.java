@@ -46,13 +46,6 @@ public class GameState {
         // Update camera
         camera.update(delta);
 
-        // DEBUGGING
-        // When a left click occurs, print the coordinates and world coordinates
-        if (InputHandler.leftClick) {
-            int[] pointer = getPlayerPointer();
-            System.out.printf("Clicked at (%d, %d)\nWorld Position (%d, %d)\n", (int) InputHandler.mouseX, (int) InputHandler.mouseY, pointer[0], pointer[1]);
-        }
-
         // If the player is left clicking, place the currently selected building at the cursor location
         // If the player is right clicking, delete the building at the cursor location
         if (InputHandler.leftHold) {
