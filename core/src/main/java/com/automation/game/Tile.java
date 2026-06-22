@@ -16,8 +16,8 @@ public abstract class Tile extends WorldObject {
     }
 
     public void draw(SpriteBatch spriteBatch, float camX, float camY, float camZoom) {
-        float screenX = (x - y) * (TILE_WIDTH/2) * camZoom - camX;
-        float screenY = (x + y) * (TILE_HEIGHT/2) * camZoom - camY;
+        float screenX = (x - y) * TILE_WIDTH * camZoom / 2 - camX;
+        float screenY = (x + y) * TILE_HEIGHT * camZoom / 2 - camY;
         spriteBatch.draw(texRegion, screenX, screenY, TILE_WIDTH*camZoom, TILE_HEIGHT*camZoom);
     }
 }
