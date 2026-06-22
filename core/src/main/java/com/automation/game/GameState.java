@@ -124,6 +124,9 @@ public class GameState {
      * Should be called 60 times per second
      */
     private void gameTick() {
+        // Update the Belt global animation variable
+        Belt.updateAnimation();
+
         for (Building building : buildings) {
             building.update();
         }
