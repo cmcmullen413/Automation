@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Belt extends Building {
 
+    AssetManager manager;
     Texture texture;
 
     // The direction the belt is facing
@@ -29,6 +30,7 @@ public class Belt extends Building {
         super(x, y, TEX_SIZE_X, TEX_SIZE_Y);
         facing = 0;
 
+        this.manager = manager;
         texture = manager.get(spritePath + DIRECTIONS[facing] + "/single.png");
         currentTexture = new TextureRegion(texture, TEX_COORDS[animationStep][0], TEX_COORDS[animationStep][1], TEX_SIZE_X, TEX_SIZE_Y);
     }
@@ -41,8 +43,12 @@ public class Belt extends Building {
 
     @Override
     public boolean rotate() {
+        // Update facing
         facing += 1;
         if (facing >= 4) { facing = 0; }
+        // Update the texture
+        texture = manager.get(spritePath + DIRECTIONS[facing] + "/single.png");
+        currentTexture = new TextureRegion(texture, TEX_COORDS[animationStep][0], TEX_COORDS[animationStep][1], TEX_SIZE_X, TEX_SIZE_Y);
         return true;
     }
 
