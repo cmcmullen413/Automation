@@ -15,7 +15,7 @@ public class Belt extends Building {
     int facing;
 
     // The number of ticks to stay in each animation frame for
-    private static final int TICKS_PER_ANIMATION = 15;
+    private static final int TICKS_PER_ANIMATION = 10;
     // The texture coords of each frame of the animation
     private static final int[][] TEX_COORDS = { {8, 15}, {72, 15}, {136, 15}, {200, 15} };
     private static final int TEX_SIZE_X = 46;
