@@ -46,6 +46,13 @@ public class GameState {
         // Update camera
         camera.update(delta);
 
+        // DEBUGGING
+        // When a left click occurs, print the coordinates and world coordinates
+        if (InputHandler.leftClick) {
+            int[] pointer = getPlayerPointer();
+            System.out.printf("Clicked at (%d, %d)\nWorld Position (%d, %d)\n", (int) InputHandler.mouseX, (int) InputHandler.mouseY, pointer[0], pointer[1]);
+        }
+
         // If the player is left clicking, place the currently selected building at the cursor location
         // If the player is right clicking, delete the building at the cursor location
         if (InputHandler.leftHold) {
@@ -105,7 +112,7 @@ public class GameState {
                 // Fill the world with stone
                 tiles.add(new StoneTile(manager, x, y));
                 // Place belts along the diagonal
-                if (x == y) {
+                if (x == 0 && y == 0) {
                     buildings.add(new Belt(manager, x, y));
                 }
             }
@@ -127,8 +134,13 @@ public class GameState {
      * @return An int array of length 2 [x, y]
      */
     private int[] getPlayerPointer() {
-        return new int[] {0, 0};
-        // TODO: Finish
-        // Basically just reverses the same transforms done in the draw function for Tile
+        // TODO: Does not work
+
+        float xPos = (InputHandler.mouseX - camera.getX()) / (WorldObject.TILE_WIDTH * camera.getZoom());
+        float yPos = (InputHandler.mouseY - camera.getY()) / (WorldObject.TILE_HEIGHT * camera.getZoom());
+        float xGrid = xPos + yPos;
+        float yGrid = yPos - xPos;
+
+        return new int[] { (int) xGrid, (int) yGrid };
     }
 }
