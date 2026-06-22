@@ -3,6 +3,8 @@ package com.automation.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.math.Vector3;
 
 import java.util.HashMap;
 
@@ -16,6 +18,8 @@ public class InputHandler extends InputAdapter {
     };
 
     // Position of the mouse
+    // Stores a reference to the Camera object to unproject the coordinates
+    private static Camera projCamera;
     public static float mouseX;
     public static float mouseY;
     // Holds whether the buttons were just pressed
@@ -31,13 +35,21 @@ public class InputHandler extends InputAdapter {
     public static HashMap<Integer, Boolean> keyStates = new HashMap<>();
 
     /**
+     * Passes in the projection camera used so the mouse coordinates can be interpreted
+     */
+    public static void setProjectionCamera(Camera camera) {
+        projCamera = camera;
+    }
+
+    /**
      * Updates all the inputs tracked
      * This includes any keys in the keymap as well as mouse position and clicks
      */
     public static void update() {
         // Update mouse
-        mouseX = Gdx.input.getX();
-        mouseY = Gdx.input.getY();
+        Vector3 mousePos = projCamera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+        mouseX = mousePos.x;
+        mouseY = mousePos.y;
         leftClick = Gdx.input.isButtonJustPressed(Input.Buttons.LEFT);
         rightClick = Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT);
         leftHold = Gdx.input.isButtonPressed(Input.Buttons.LEFT);
@@ -54,7 +66,7 @@ public class InputHandler extends InputAdapter {
     // Currently just used for camera scrolling
     // This is because it can only be done with events
 
-    private GameCamera camera;
+    private final GameCamera camera;
 
     public InputHandler(GameCamera camera) {
         this.camera = camera;

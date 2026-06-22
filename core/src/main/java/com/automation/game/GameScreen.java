@@ -33,6 +33,9 @@ public class GameScreen implements Screen {
         camera = new OrthographicCamera();
         viewport = new ExtendViewport(800, 480, camera);
 
+        // Pass the camera into the input handler
+        InputHandler.setProjectionCamera(camera);
+
         // Initialize the game state
         gameState = new GameState(main.getManager());
     }
