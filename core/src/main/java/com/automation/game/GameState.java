@@ -2,6 +2,7 @@ package com.automation.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.*;
@@ -19,6 +20,9 @@ public class GameState {
 
     // The camera controlled by the player
     GameCamera camera;
+    // Where in the game world the cursor points at
+    int pointX;
+    int pointY;
 
     // Timer to keep track of when a game tick should happen
     float tickTimer;
@@ -44,10 +48,13 @@ public class GameState {
         InputHandler.update();
         // Update camera
         camera.update(delta);
+        // Update where the player is pointing to
+        updatePlayerPointer(InputHandler.mouseX, InputHandler.mouseY, camera.getX(), camera.getY(), camera.getZoom());
 
+        // TODO: Finish
         // If the player left clicks, place the currently selected building at the cursor location
         // If the player right clicks, delete the building at the cursor location
-        if (true) {
+        if (InputHandler.leftClick) {
 
         }
 
@@ -83,8 +90,8 @@ public class GameState {
         // Fill the tiles array with the starting world tiles
         tiles = new HashSet<>(WORLD_X*WORLD_Y);
         buildings = new TreeSet<>();
-        for (int y = 0; y < WORLD_Y; y++) {
-            for (int x = 0; x < WORLD_X; x++) {
+        for (int y = -WORLD_Y; y < WORLD_Y; y++) {
+            for (int x = -WORLD_X; x < WORLD_X; x++) {
                 // Fill the world with stone
                 tiles.add(new StoneTile(manager, x, y));
                 // Place belts along the diagonal
@@ -103,5 +110,13 @@ public class GameState {
         for (Building building : buildings) {
             building.update();
         }
+    }
+
+    private void updatePlayerPointer(float mouseX, float mouseY, float camX, float camY, float camZoom) {
+        pointX = 0;
+        pointY = 0;
+        // TODO: Finish
+        // Basically just reverses the same transforms done in the draw function for Tile
+        //pointX = (int) (InputHandler.mouseX + camera.getX()) / (camera.getZoom() * );
     }
 }
