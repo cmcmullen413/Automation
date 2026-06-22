@@ -134,15 +134,13 @@ public class GameState {
      * @return An int array of length 2 [x, y]
      */
     private int[] getPlayerPointer() {
-        // TODO: Does not work
-
         // Undo to camera shift on the x and y position of the mouse
         float x = (InputHandler.mouseX - camera.getX()) / camera.getZoom();
         float y = (InputHandler.mouseY - camera.getY()) / camera.getZoom();
         // Solve for worldX and worldY
-        float worldX = (x+y)/WorldObject.TILE_HEIGHT -1;
-        float worldY = (y-x/2)/WorldObject.TILE_WIDTH + 0.5f;
+        float worldX = (y+x/2)/WorldObject.TILE_HEIGHT - 0.5f;
+        float worldY = (y-x/2)/WorldObject.TILE_HEIGHT + 0.5f;
         // Round them down to get integers
-        return new int[] { (int) worldX, (int) worldY };
+        return new int[] { (int) Math.floor(worldX), (int) Math.floor(worldY) };
     }
 }
