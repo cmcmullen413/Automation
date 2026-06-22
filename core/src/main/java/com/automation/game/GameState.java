@@ -4,8 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class GameState {
     private static final int WORLD_X = 10, WORLD_Y = 10;
@@ -14,9 +13,9 @@ public class GameState {
     AssetManager manager;
 
     // List of all the tiles in the world
-    List<Tile> tiles;
+    Set<Tile> tiles;
     // List of all the buildings in the world
-    List<Building> buildings;
+    Set<Building> buildings;
 
     // The camera controlled by the player
     GameCamera camera;
@@ -45,6 +44,12 @@ public class GameState {
         InputHandler.update();
         // Update camera
         camera.update(delta);
+
+        // If the player left clicks, place the currently selected building at the cursor location
+        // If the player right clicks, delete the building at the cursor location
+        if (true) {
+
+        }
 
         // Update core game mechanics on a fixed time step ( 60/sec)
         tickTimer += delta;
@@ -76,14 +81,14 @@ public class GameState {
      */
     private void initialize() {
         // Fill the tiles array with the starting world tiles
-        tiles = new ArrayList<>(WORLD_X*WORLD_Y);
-        buildings = new ArrayList<>();
+        tiles = new HashSet<>(WORLD_X*WORLD_Y);
+        buildings = new TreeSet<>();
         for (int y = 0; y < WORLD_Y; y++) {
             for (int x = 0; x < WORLD_X; x++) {
                 // Fill the world with stone
                 tiles.add(new StoneTile(manager, x, y));
                 // Place belts along the diagonal
-                if (x == 1 && y == 1) {
+                if (x == y) {
                     buildings.add(new Belt(manager, x, y));
                 }
             }

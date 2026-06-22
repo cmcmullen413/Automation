@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 /**
  * Abstract class for representing any building
  */
-public abstract class Building {
+public abstract class Building implements Comparable<Building> {
     // Holds the path the assets folder for the building
     protected final String spritePath;
 
@@ -43,5 +43,16 @@ public abstract class Building {
         float screenX = (realX - realY) * (Tile.TILE_WIDTH/2) * camZoom - camX;
         float screenY = (realX + realY) * (Tile.TILE_HEIGHT/2) * camZoom - camY;
         spriteBatch.draw(currentTexture, screenX, screenY, buildingSizeX*camZoom, buildingSizeY*camZoom);
+    }
+
+    @Override
+    public int compareTo(Building other) {
+        // Sort by x first, then y
+        // Higher x or y should be ordered lower so when a set of buildings is iterated through
+        // They can be drawn from back right to front left to display them properly
+        if (this.x != other.x) { return this.x < other.x ? 1 : -1; }
+        if (this.y != other.y) { return this.y < other.y ? 1 : -1; }
+        // If the x and y are the same they are in the same square
+        return 0;
     }
 }
