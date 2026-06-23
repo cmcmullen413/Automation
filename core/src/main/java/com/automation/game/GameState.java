@@ -58,7 +58,12 @@ public class GameState {
             // Attempt to add a new building
             // If there is already one there, the set will not be able to add it
             // If there is no building there, the set will add it
-            buildings.add(new Belt(manager, pointer[0], pointer[1]));
+            Belt newBuilding = new Belt(manager, pointer[0], pointer[1]);
+            buildings.add(newBuilding);
+
+            // Update which neighbors the belt has as well as the neighbors around it
+            updateBeltNeighbors((Belt) newBuilding, pointer[0], pointer[1]);
+
         } else if (InputHandler.rightHold) {
             // Get the location where the pointer is
             int[] pointer = getPlayerPointer();
@@ -66,16 +71,25 @@ public class GameState {
             // Call buildings.remove with a DummyObject
             // If there is no building at that space, nothing will happen
             buildings.remove(new Building(pointer[0], pointer[1], 0, 0) {@Override public void update() {}});
+            // Update the neighbors of the surrounding belts
+            updateBeltNeighbors(null, pointer[0], pointer[1]);
         }
         // If the player pressed R, rotate the building at the position if there is one
         else if (InputHandler.keyPresses.get(Input.Keys.R)) {
             // Get the mouse position
             int[] pointer = getPlayerPointer();
 
+            // DEBUGGING
+            System.out.printf("Pointer at (%d, %d)\n", pointer[0], pointer[1]);
+
             // Get the building at the position if there is one
             Building building = buildings.get(pointer[0], pointer[1]);
             // If there is no building at the position, do nothing
             if (building != null) {
+
+                // DEBUGGING
+                System.out.printf("Building at (%d, %d)\n", pointer[0], pointer[1]);
+
                 // If there is a building, attempt to rotate it
                 if (!building.rotate()) {
                     // If the building could not be rotated, print a message out
@@ -117,14 +131,10 @@ public class GameState {
         // Fill the tiles array with the starting world tiles
         tiles = new ObjectSet<>();
         buildings = new ObjectSet<>();
+        // Fill the world with stone tiles
         for (int y = -WORLD_Y; y < WORLD_Y; y++) {
             for (int x = -WORLD_X; x < WORLD_X; x++) {
-                // Fill the world with stone
                 tiles.add(new StoneTile(manager, x, y));
-                // Place belts along the diagonal
-                if (x == 0 && y == 0) {
-                    buildings.add(new Belt(manager, x, y));
-                }
             }
         }
     }
@@ -155,5 +165,29 @@ public class GameState {
         float worldY = (y-x/2)/WorldObject.TILE_HEIGHT + 0.5f;
         // Round them down to get integers
         return new int[] { (int) Math.floor(worldX), (int) Math.floor(worldY) };
+    }
+
+    /**
+     * Updates the neighbors surrounding a belt when placing or removing it
+     * @param belt The belt placed or null if it was removed
+     * @param x The x position where the change was made
+     * @param y The y position where the change was made
+     */
+    private void updateBeltNeighbors(Belt belt, int x, int y) {
+        // Get the building surrounding this one
+        Building[] neighbors = {
+            buildings.get(x-1, y),
+            buildings.get(x, y+1),
+            buildings.get(x+1, y),
+            buildings.get(x, y-1)
+        };
+        // For each one, if it is a belt, update it's and the new belts neighbors
+        for (Building neighbor : neighbors) {
+            if (neighbor != null && neighbor.getClass() == Belt.class) {
+                ((Belt) neighbor).updateNeighbor(belt, x, y);
+                // If the belt was removed, belt will be null so skip updating it
+                if (belt != null) { belt.updateNeighbor((Belt) neighbor, neighbor.x, neighbor.y); }
+            }
+        }
     }
 }
