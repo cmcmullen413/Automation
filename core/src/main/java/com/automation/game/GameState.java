@@ -158,8 +158,8 @@ public class GameState {
      */
     private int[] getPlayerPointer() {
         // Undo to camera shift on the x and y position of the mouse
-        float x = (InputHandler.mouseX - camera.getX()) / camera.getZoom();
-        float y = (InputHandler.mouseY - camera.getY()) / camera.getZoom();
+        float x = (InputHandler.mouseX + camera.getX()) / camera.getZoom();
+        float y = (InputHandler.mouseY + camera.getY()) / camera.getZoom();
         // Solve for worldX and worldY
         float worldX = (y+x/2)/WorldObject.TILE_HEIGHT - 0.5f;
         float worldY = (y-x/2)/WorldObject.TILE_HEIGHT + 0.5f;
