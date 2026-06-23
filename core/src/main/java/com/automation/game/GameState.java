@@ -59,11 +59,11 @@ public class GameState {
             // If there is already one there, the set will not be able to add it
             // If there is no building there, the set will add it
             Belt newBuilding = new Belt(manager, pointer[0], pointer[1]);
-            buildings.add(newBuilding);
-
-            // Update which neighbors the belt has as well as the neighbors around it
-            updateBeltNeighbors((Belt) newBuilding, pointer[0], pointer[1]);
-
+            if (buildings.add(newBuilding)) {
+                // If a new belt was placed
+                // Update which neighbors the belt has as well as the neighbors around it
+                updateBeltNeighbors((Belt) newBuilding, pointer[0], pointer[1]);
+            }
         } else if (InputHandler.rightHold) {
             // Get the location where the pointer is
             int[] pointer = getPlayerPointer();

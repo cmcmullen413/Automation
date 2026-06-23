@@ -29,7 +29,6 @@ public class Belt extends Building {
     private static final int FACING_SOUTHEAST = 3;
     int facing;
 
-    // TODO: Implement curves and some kind of check for if the belt actually faces into this one
     // The type of belt it should be depending on if it has neighbors facing towards and from it
     private static final String[] name = {};
     // Which neighbors the belt has as well as if the neighbor actually face into this belt
@@ -76,13 +75,14 @@ public class Belt extends Building {
 
         // Update the texture
         updateTexture();
+
         return true;
     }
 
     public void updateNeighbor(Belt neighbor, int neighborX, int neighborY) {
         // Find the correct side of this to set the neighbor to
-        int deltaX = x - neighborX;
-        int deltaY = y - neighborY;
+        int deltaX = neighborX - x;
+        int deltaY = neighborY - y;
         // This depends on the x and y value passed in as well as the direction this is currently facing
         // Also update whether that belt facing into this one or not
         //
@@ -179,22 +179,46 @@ public class Belt extends Building {
      * to anything that determines texture such as animationStep or facing
      */
     private void updateTexture() {
+        // TODO: Figure something out for the end of the curve belts so there isn't a random gap
+
         // Get the correct type of belt (single, end, start, etc.)
         String beltType;
-        // TODO: Implement curves
 
-        // TODO: Either the correct textures aren't displaying or neighbor updating isn't correct. Either way, FIX
-
-        // The belt is a single if: no front neighbor and rear does not exist or does not face towards this
-        if (frontNeighbor == null && (rearNeighbor == null || !rearNeighborFacing)) { beltType = "single"; }
-        // The belt is a start if: has a front neighbor and rear does not exist or does not face towards this
-        else if (frontNeighbor != null && (rearNeighbor == null || !rearNeighborFacing)) { beltType = "start"; }
-        // The belt is an end if: has no front neighbor and rear faces towards this
-        // Second condition is always true by this point
-        else if (frontNeighbor == null) { beltType = "end"; }
-        // The belt is a middle if: has a front and a rear that faces towards this
-        // These conditions are always true by this point
-        else { beltType = "middle"; }
+        // The belt is of the straight types and not a curve if:
+        // either: both side neighbors face towards this OR both side neighbors either don't exist or don't face towards this
+        if ((leftNeighborFacing && rightNeighborFacing || (leftNeighbor == null || !leftNeighborFacing) && (rightNeighbor == null || !rightNeighborFacing))) {
+            // The belt is a single if:
+            // no front neighbor
+            // rear neighbor does not exist or does not face towards this
+            if (frontNeighbor == null
+                && (rearNeighbor == null || !rearNeighborFacing)) {
+                beltType = "single";
+            }
+            // The belt is a start if:
+            // has a front neighbor
+            // rear does not exist or does not face towards this
+            else if (frontNeighbor != null && (rearNeighbor == null || !rearNeighborFacing)) {
+                beltType = "start";
+            }
+            // The belt is an end if: has no front neighbor and rear faces towards this
+            // Second condition is always true by this point
+            else if (frontNeighbor == null) {
+                beltType = "end";
+            }
+            // The belt is a middle if: has a front and a rear that faces towards this
+            // These conditions are always true by this point
+            else {
+                beltType = "middle";
+            }
+        }
+        // Otherwise it is on of the curve types
+        else {
+            // The belt is a left curve if left facing is true
+            if (leftNeighborFacing) { beltType = "left_curve"; }
+            // The belt is a right curve if right facing is true
+            // This should always be true by this point
+            else { beltType = "right_curve"; }
+        }
 
         texture = manager.get(spritePath + DIRECTIONS[facing] + "/" + beltType + ".png");
         currentTexture = new TextureRegion(texture, TEX_COORDS[animationStep][0], TEX_COORDS[animationStep][1], TEX_SIZE_X, TEX_SIZE_Y);
