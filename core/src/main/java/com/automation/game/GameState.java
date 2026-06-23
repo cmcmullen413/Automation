@@ -79,22 +79,19 @@ public class GameState {
             // Get the mouse position
             int[] pointer = getPlayerPointer();
 
-            // DEBUGGING
-            System.out.printf("Pointer at (%d, %d)\n", pointer[0], pointer[1]);
-
             // Get the building at the position if there is one
             Building building = buildings.get(pointer[0], pointer[1]);
             // If there is no building at the position, do nothing
             if (building != null) {
-
-                // DEBUGGING
-                System.out.printf("Building at (%d, %d)\n", pointer[0], pointer[1]);
-
                 // If there is a building, attempt to rotate it
                 if (!building.rotate()) {
                     // If the building could not be rotated, print a message out
                     // TODO: Make this print to the screen in some way so the player can see
                     System.out.println("Building cannot be rotated");
+                }
+                // If the building was a belt, update the neighbors of the belts surrounding it.
+                if (building.getClass() == Belt.class) {
+                    updateBeltNeighbors( (Belt) building, pointer[0], pointer[1]);
                 }
             }
         }

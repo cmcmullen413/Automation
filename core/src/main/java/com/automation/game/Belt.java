@@ -23,20 +23,28 @@ public class Belt extends Building {
     // The direction the belt is facing
     private static final String[] DIRECTIONS = { "Southwest", "Northwest", "Northeast", "Southeast" };
     // 0 -> Southwest, 1-> Northwest, 2 -> Northeast, 3 -> Southeast
+    private static final int FACING_SOUTHWEST = 0;
+    private static final int FACING_NORTHWEST = 1;
+    private static final int FACING_NORTHEAST = 2;
+    private static final int FACING_SOUTHEAST = 3;
     int facing;
 
     // TODO: Implement curves and some kind of check for if the belt actually faces into this one
     // The type of belt it should be depending on if it has neighbors facing towards and from it
     private static final String[] name = {};
-    // Which neighbors the belt has
-    Belt rearNeighbor;
+    // Which neighbors the belt has as well as if the neighbor actually face into this belt
     Belt frontNeighbor;
+    boolean frontNeighborFacing;
+    Belt rearNeighbor;
+    boolean rearNeighborFacing;
     Belt leftNeighbor;
+    boolean leftNeighborFacing;
     Belt rightNeighbor;
+    boolean rightNeighborFacing;
 
     public Belt(AssetManager manager, int x, int y) {
         super(x, y, TEX_SIZE_X, TEX_SIZE_Y);
-        facing = 0;
+        facing = FACING_SOUTHWEST;
 
         this.manager = manager;
         updateTexture();
@@ -52,14 +60,19 @@ public class Belt extends Building {
     public boolean rotate() {
         // Update facing
         facing += 1;
-        if (facing >= 4) { facing = 0; }
+        if (facing >= 4) { facing = FACING_SOUTHWEST; }
 
         // Update the neighbor values
         Belt tempFront = frontNeighbor;
+        boolean tempFrontFacing = frontNeighborFacing;
         frontNeighbor = rightNeighbor;
+        frontNeighborFacing = rightNeighborFacing;
         rightNeighbor = rearNeighbor;
+        rightNeighborFacing = rearNeighborFacing;
         rearNeighbor = leftNeighbor;
+        rearNeighborFacing = leftNeighborFacing;
         leftNeighbor = tempFront;
+        leftNeighborFacing = tempFrontFacing;
 
         // Update the texture
         updateTexture();
@@ -68,30 +81,96 @@ public class Belt extends Building {
 
     public void updateNeighbor(Belt neighbor, int neighborX, int neighborY) {
         // Find the correct side of this to set the neighbor to
-        int deltaX = x-neighborX;
-        int deltaY = y-neighborY;
+        int deltaX = x - neighborX;
+        int deltaY = y - neighborY;
         // This depends on the x and y value passed in as well as the direction this is currently facing
-        if (facing == 0) {
-            if (deltaX < 0) { frontNeighbor = neighbor; }
-            else if (deltaX > 0) { rearNeighbor = neighbor; }
-            else if (deltaY < 0) { leftNeighbor = neighbor; }
-            else if (deltaY > 0) { rightNeighbor = neighbor; }
-        } else if (facing == 1) {
-            if (deltaX < 0) { leftNeighbor = neighbor; }
-            else if (deltaX > 0) { rightNeighbor = neighbor; }
-            else if (deltaY < 0) { rearNeighbor = neighbor; }
-            else if (deltaY > 0) { frontNeighbor = neighbor; }
-        } else if (facing == 2) {
-            if (deltaX < 0) { rearNeighbor = neighbor; }
-            else if (deltaX > 0) { frontNeighbor = neighbor; }
-            else if (deltaY < 0) { rightNeighbor = neighbor; }
-            else if (deltaY > 0) { leftNeighbor = neighbor; }
-        } else if (facing == 3) {
-            if (deltaX < 0) { rightNeighbor = neighbor; }
-            else if (deltaX > 0) { leftNeighbor = neighbor; }
-            else if (deltaY < 0) { frontNeighbor = neighbor; }
-            else if (deltaY > 0) { rearNeighbor = neighbor; }
+        // Also update whether that belt facing into this one or not
+        //
+        // Whether the neighbor faces towards this belt or not
+        boolean newNeighborFacing;
+        if (deltaX < 0) {
+            if (neighbor != null) { newNeighborFacing = neighbor.facing == FACING_NORTHEAST; }
+            else { newNeighborFacing = false; }
+
+            if (facing == FACING_SOUTHWEST) {
+                frontNeighbor = neighbor;
+                frontNeighborFacing = newNeighborFacing;
+            }
+            else if (facing == FACING_NORTHWEST) {
+                leftNeighbor = neighbor;
+                leftNeighborFacing = newNeighborFacing;
+            }
+            else if (facing == FACING_NORTHEAST) {
+                rearNeighbor = neighbor;
+                rearNeighborFacing = newNeighborFacing;
+            }
+            else if (facing == FACING_SOUTHEAST) {
+                rightNeighbor = neighbor;
+                rightNeighborFacing = newNeighborFacing;
+            }
+        } else if (deltaX > 0) {
+            if (neighbor != null) { newNeighborFacing = neighbor.facing == FACING_SOUTHWEST; }
+            else { newNeighborFacing = false; }
+
+            if (facing == FACING_SOUTHWEST) {
+                rearNeighbor = neighbor;
+                rearNeighborFacing = newNeighborFacing;
+            }
+            else if (facing == FACING_NORTHWEST) {
+                rightNeighbor = neighbor;
+                rightNeighborFacing = newNeighborFacing;
+            }
+            else if (facing == FACING_NORTHEAST) {
+                frontNeighbor = neighbor;
+                frontNeighborFacing = newNeighborFacing;
+            }
+            else if (facing == FACING_SOUTHEAST) {
+                leftNeighbor = neighbor;
+                leftNeighborFacing = newNeighborFacing;
+            }
+        } else if (deltaY < 0) {
+            if (neighbor != null) { newNeighborFacing = neighbor.facing == FACING_NORTHWEST; }
+            else { newNeighborFacing = false; }
+
+            if (facing == FACING_SOUTHWEST) {
+                leftNeighbor = neighbor;
+                leftNeighborFacing = newNeighborFacing;
+            }
+            else if (facing == FACING_NORTHWEST) {
+                rearNeighbor = neighbor;
+                rearNeighborFacing = newNeighborFacing;
+            }
+            else if (facing == FACING_NORTHEAST) {
+                rightNeighbor = neighbor;
+                rightNeighborFacing = newNeighborFacing;
+            }
+            else if (facing == FACING_SOUTHEAST) {
+                frontNeighbor = neighbor;
+                frontNeighborFacing = newNeighborFacing;
+            }
+        } else if (deltaY > 0) {
+            if (neighbor != null) { newNeighborFacing = neighbor.facing == FACING_SOUTHEAST; }
+            else { newNeighborFacing = false; }
+
+            if (facing == FACING_SOUTHWEST) {
+                rightNeighbor = neighbor;
+                rightNeighborFacing = newNeighborFacing;
+            }
+            else if (facing == FACING_NORTHWEST) {
+                frontNeighbor = neighbor;
+                frontNeighborFacing = newNeighborFacing;
+            }
+            else if (facing == FACING_NORTHEAST) {
+                leftNeighbor = neighbor;
+                leftNeighborFacing = newNeighborFacing;
+            }
+            else if (facing == FACING_SOUTHEAST) {
+                rearNeighbor = neighbor;
+                rearNeighborFacing = newNeighborFacing;
+            }
         }
+
+        // Update the new texture
         updateTexture();
     }
 
@@ -102,14 +181,19 @@ public class Belt extends Building {
     private void updateTexture() {
         // Get the correct type of belt (single, end, start, etc.)
         String beltType;
-        // TODO Implement curves
-        // If no front or rear neighbors, it is single
-        if (frontNeighbor != null && rearNeighbor != null) { beltType = "single"; }
-        // If just fron neighbor, it is start
-        else if (rearNeighbor != null) { beltType = "start"; }
-        // If just read neighbor, it is end
-        else if (frontNeighbor != null) { beltType = "end"; }
-        // Otherwise it is a middle
+        // TODO: Implement curves
+
+        // TODO: Either the correct textures aren't displaying or neighbor updating isn't correct. Either way, FIX
+
+        // The belt is a single if: no front neighbor and rear does not exist or does not face towards this
+        if (frontNeighbor == null && (rearNeighbor == null || !rearNeighborFacing)) { beltType = "single"; }
+        // The belt is a start if: has a front neighbor and rear does not exist or does not face towards this
+        else if (frontNeighbor != null && (rearNeighbor == null || !rearNeighborFacing)) { beltType = "start"; }
+        // The belt is an end if: has no front neighbor and rear faces towards this
+        // Second condition is always true by this point
+        else if (frontNeighbor == null) { beltType = "end"; }
+        // The belt is a middle if: has a front and a rear that faces towards this
+        // These conditions are always true by this point
         else { beltType = "middle"; }
 
         texture = manager.get(spritePath + DIRECTIONS[facing] + "/" + beltType + ".png");
