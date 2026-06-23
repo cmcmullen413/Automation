@@ -70,7 +70,7 @@ public class GameState {
 
             // Call buildings.remove with a DummyObject
             // If there is no building at that space, nothing will happen
-            buildings.remove(new Building(pointer[0], pointer[1], 0, 0) {@Override public void update() {}});
+            buildings.remove(new Building(pointer[0], pointer[1], 0) {@Override public void update() {}});
             // Update the neighbors of the surrounding belts
             updateBeltNeighbors(null, pointer[0], pointer[1]);
         }

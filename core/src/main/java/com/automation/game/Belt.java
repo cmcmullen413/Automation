@@ -42,7 +42,7 @@ public class Belt extends Building {
     boolean rightNeighborFacing;
 
     public Belt(AssetManager manager, int x, int y) {
-        super(x, y, TEX_SIZE_X, TEX_SIZE_Y);
+        super(x, y, 1);
         facing = FACING_SOUTHWEST;
 
         this.manager = manager;

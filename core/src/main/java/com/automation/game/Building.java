@@ -11,18 +11,15 @@ public abstract class Building extends WorldObject {
     protected final String spritePath;
 
     protected TextureRegion currentTexture;
-    int buildingSizeX;
-    int buildingSizeY;
-    int buildingOffsetX;
-    int buildingOffsetY;
 
-    public Building(int x, int y, int buildingSizeX, int buildingSizeY) {
+    // The size of the building in number of tiles
+    int buildingSize;
+
+
+    public Building(int x, int y, int buildingSize) {
         super(x, y);
         spritePath = "assets/buildings/" + this.getClass().getSimpleName() + "/";
-        this.buildingSizeX = buildingSizeX;
-        this.buildingSizeY = buildingSizeY;
-        buildingOffsetX = (TILE_WIDTH - buildingSizeX)/2;
-        buildingOffsetY = (TILE_HEIGHT - buildingSizeY)/2;
+        this.buildingSize = buildingSize;
     }
 
     /**
@@ -43,11 +40,13 @@ public abstract class Building extends WorldObject {
      * @param spriteBatch
      */
     public void draw(SpriteBatch spriteBatch, float camX, float camY, float camZoom) {
-        float realX = x + 1f*buildingOffsetX/Tile.TILE_WIDTH;
-        // TODO Figure out if centering on the y is actually needed because it doesn't seem like it
+        float buildingOffsetX = (buildingSize*TILE_WIDTH - currentTexture.getRegionWidth())/2f;
+        float realX = x + buildingOffsetX/Tile.TILE_WIDTH;
+        // TODO: Figure out if centering on the y is actually needed because it doesn't seem like it
+        float buildingOffsetY = (TILE_HEIGHT - currentTexture.getRegionHeight())/2f;
         float realY = y;// + 1f*buildingOffsetY/Tile.TILE_HEIGHT;
-        float screenX = (realX - realY) * (TILE_WIDTH/2) * camZoom - camX;
-        float screenY = (realX + realY) * (TILE_HEIGHT/2) * camZoom - camY;
-        spriteBatch.draw(currentTexture, screenX, screenY, buildingSizeX*camZoom, buildingSizeY*camZoom);
+        float screenX = (realX - realY) * (TILE_WIDTH/2f) * camZoom - camX;
+        float screenY = (realX + realY) * (TILE_HEIGHT/2f) * camZoom - camY;
+        spriteBatch.draw(currentTexture, screenX, screenY, currentTexture.getRegionWidth()*camZoom, currentTexture.getRegionHeight()*camZoom);
     }
 }
